@@ -66,7 +66,7 @@ public class Packet {
         DecimalFormat df = new DecimalFormat("0000");
         message = message.concat(df.format(id) + "-");
         message = message.concat(df.format(min) + "-");
-        message = message.concat(df.format(max) + "$");
+        message = message.concat(df.format(max) + type);
         message = message.concat(data);
         return message;
     }
