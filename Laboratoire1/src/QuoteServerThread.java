@@ -16,11 +16,10 @@ public class QuoteServerThread extends Thread {
         super(name);
         socket = new DatagramSocket(4445);
 
-        in = new BufferedReader(new StringReader("Yeet"));
+        in = new BufferedReader(new FileReader("C:\\Users\\benge\\OneDrive\\Documents\\Repo\\S3APP3\\Laboratoire1\\src\\one-liners.txt"));
     }
 
     public void run() {
-        while (true) {
             try {
                 byte[] buf = new byte[256];
 
@@ -28,12 +27,14 @@ public class QuoteServerThread extends Thread {
                 DatagramPacket packet = new DatagramPacket(buf, buf.length);
                 socket.receive(packet);
 
-                /*// figure out response
+                // figure out response
                 String dString = null;
                 if (in == null)
                     dString = new Date().toString();
+                else
+                    dString = "Patate";
 
-                buf = dString.getBytes();*/
+                buf = dString.getBytes();
 
                 // send the response to the client at "address" and "port"
                 InetAddress address = packet.getAddress();
@@ -45,5 +46,5 @@ public class QuoteServerThread extends Thread {
             }
             socket.close();
         }
-    }
+
 }
