@@ -1,6 +1,7 @@
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.util.zip.CRC32;
 
 public class QuoteServerThread extends Thread {
 
@@ -16,7 +17,6 @@ public class QuoteServerThread extends Thread {
         super(name);
         socket = new DatagramSocket(4445);
 
-        in = new BufferedReader(new FileReader("C:\\Users\\benge\\OneDrive\\Documents\\Repo\\S3APP3\\Laboratoire1\\src\\one-liners.txt"));
     }
 
     public void run() {
@@ -29,10 +29,7 @@ public class QuoteServerThread extends Thread {
 
                 // figure out response
                 String dString = null;
-                if (in == null)
-                    dString = new Date().toString();
-                else
-                    dString = "Patate";
+                dString = "Patate";
 
                 buf = dString.getBytes();
 

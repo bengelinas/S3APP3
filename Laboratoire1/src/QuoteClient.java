@@ -4,11 +4,7 @@ import java.util.*;
 
 public class QuoteClient {
     public static void main(String[] args) throws IOException {
-        args[0]="LAPTOP-JGM2CQ2H";
-        if (args.length != 1) {
-            System.out.println("Usage: java QuoteClient <hostname>");
-            return;
-        }
+        args[0]="gegi-lab3041-02";
 
         // get a datagram socket
         DatagramSocket socket = new DatagramSocket();
