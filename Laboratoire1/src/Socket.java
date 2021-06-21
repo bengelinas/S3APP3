@@ -9,19 +9,21 @@ import java.net.InetAddress;
 
 public class Socket {
     DatagramSocket monSocket;
-    String adresse;
+    InetAddress ip;
+    int port;
     public void envoyer(String message) throws IOException
     {
         byte[] buf;
         buf=message.getBytes();
-        InetAddress address = InetAddress.getByName(adresse);
-        DatagramPacket packet = new DatagramPacket(buf, buf.length, address, 50000);
+        DatagramPacket packet = new DatagramPacket(buf, buf.length, ip, port);
         monSocket.send(packet);
     }
     public void initialisation(String adresse) throws IOException
     {
         // get a datagram socket
         monSocket = new DatagramSocket();
+        ip=InetAddress.getByName(adresse);
+        port=50000;
 
     }
     public void initialisationReception(String adresse) throws IOException
@@ -35,6 +37,8 @@ public class Socket {
         byte[] buf = new byte[225];
         DatagramPacket packet = new DatagramPacket(buf, buf.length);
         monSocket.receive(packet);
+        ip=packet.getAddress();
+        port= packet.getPort();
         String message = new String(packet.getData(), 0, packet.getLength());
         return message;
     }

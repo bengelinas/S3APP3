@@ -21,11 +21,11 @@ public class Crc {
     public boolean verification(String packet)
     {
         String tempDebut=packet.substring(0,15);
-        System.out.println(packet.substring(0,15));
+
         String tempCRC=packet.substring(15,23);
-        System.out.println(packet.substring(15,23));
+
         String tempData=packet.substring(23);
-        System.out.println(packet.substring(23));
+
         String temp=tempDebut+tempData;
         String CRC= encode(temp);
         if(CRC.equals(tempCRC))

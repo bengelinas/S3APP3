@@ -42,13 +42,22 @@ public class Transmission {
     public void transmettre()
     {
         //Creation du premier packet
-        try{
-            String tempPacket= premier();
-            tempPacket = monCrc.ajouterCrc(tempPacket);
-            monSocket.envoyer(tempPacket);
-        }catch(Exception e){}
 
-        //Attendre le packet d'acknowledgement
+            try {
+                while(true) {
+                    String tempPacket = premier();
+                    tempPacket = monCrc.ajouterCrc(tempPacket);
+                    monSocket.envoyer(tempPacket);
+                    if(attente(tempPacket))
+                    {
+                        break;
+                    }
+                }
+            } catch (Exception e){
+                }
+
+
+
         try {
         //Creation et envoie des packets de donnees
         byte[] dataConversion = Files.readAllBytes(Paths.get(fichier.getAbsolutePath()));
@@ -56,6 +65,7 @@ public class Transmission {
         int i=0;
         int j=200;
         String monData;
+        String tempPacket="";
             while(currentPacket<=dernierPacket)
             {
                 if(j > dataPacket.length()){
@@ -65,14 +75,21 @@ public class Transmission {
                 else{
                     monData=dataPacket.substring(i,j);
                 }
+
                 i=i+200;
                 j=j+200;
                 currentPacket++;
 
                 //Attendre le packet d'acknowledgement
-                String tempPacket=suivant(monData);
+                tempPacket=suivant(monData);
                 tempPacket = monCrc.ajouterCrc(tempPacket);
                 monSocket.envoyer(tempPacket);
+                if(!(attente(tempPacket)))
+                {
+                    i=i-200;
+                    j=j-200;
+                    currentPacket--;
+                }
             }
         }catch(Exception e){}
     }
@@ -81,12 +98,13 @@ public class Transmission {
     {
         monSocket = new Socket();
         try{
-            monSocket.initialisation(adresse);}
+            monSocket.initialisation(adresse);
+        }
         catch(Exception e){
 
         }
-        //Creation du Crc
-        monCrc= new Crc();
+            //Creation du Crc
+            monCrc = new Crc();
 
 
         //initialisation des variables
@@ -98,5 +116,34 @@ public class Transmission {
         tailleFichier = fichier.length();
         long totalPacketNumber = (tailleFichier/200)+1;
         dernierPacket=totalPacketNumber+premierPacket;
+    }
+
+    public boolean attente(String packet)
+    {
+        try {
+            while(true) {
+
+                String packetRecu = monSocket.recevoir();
+
+                if (!(monCrc.verification(packetRecu))) {
+                    return false;
+                }
+                if ((packetRecu.substring(0, 14).equals( packet.substring(0, 14)))) {
+                    if (packetRecu.substring(14, 15).equals( "!")) {
+
+                        return true;
+                    } else if (packetRecu.substring(14, 15).equals( "?")) {
+
+                        return false;
+                    }
+                    else if(packetRecu.substring(14, 15).equals( "$"))
+                    {
+
+                    }
+                }
+            }
+
+        }catch(Exception e){System.out.println(e); }
+        return false;
     }
 }
