@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.SocketTimeoutException;
 
 //*********************************************************************
 // peut-etre essayer de faire un echange d'ip et de port avec l'autre
@@ -22,6 +23,7 @@ public class Socket {
     {
         // get a datagram socket
         monSocket = new DatagramSocket();
+        monSocket.setSoTimeout(10000);
         ip=InetAddress.getByName(adresse);
         port=50000;
 
@@ -36,10 +38,18 @@ public class Socket {
     {
         byte[] buf = new byte[225];
         DatagramPacket packet = new DatagramPacket(buf, buf.length);
-        monSocket.receive(packet);
-        ip=packet.getAddress();
-        port= packet.getPort();
-        String message = new String(packet.getData(), 0, packet.getLength());
+        String message;
+        try {
+            monSocket.receive(packet);
+            ip = packet.getAddress();
+            port = packet.getPort();
+            message = new String(packet.getData(), 0, packet.getLength());
+        }catch(SocketTimeoutException e){
+            message = "0000-0000-0000$00000000";
+            System.out.println("TIMEOUT !");
+        }
+
+
         return message;
     }
 }
