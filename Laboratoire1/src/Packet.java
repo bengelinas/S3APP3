@@ -1,6 +1,7 @@
 import java.text.DecimalFormat;
 
 public class Packet {
+
     public long getId() {
         return id;
     }
@@ -33,14 +34,6 @@ public class Packet {
         this.type = type;
     }
 
-    public String getCrc() {
-        return crc;
-    }
-
-    public void setCrc(String crc) {
-        this.crc = crc;
-    }
-
     public String getData() {
         return data;
     }
@@ -53,12 +46,17 @@ public class Packet {
     long min;
     long max;
     String type;
-    String crc;
     String data;
-    public Packet()
-    {
 
+    public Packet(long id, long min, long max, String type, String data)
+    {
+        this.id = id;
+        this.min = min;
+        this.max = max;
+        this.type = type;
+        this.data = data;
     }
+
     public String toString()
     {
         String message="";
@@ -70,5 +68,4 @@ public class Packet {
         message = message.concat(data);
         return message;
     }
-
 }

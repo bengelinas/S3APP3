@@ -8,34 +8,32 @@ public class Transmission {
     long tailleFichier;
     String nomFichier;
     File fichier;
-    Socket monSocket;
     Crc monCrc;
     Log monLog;
-    public Transmission()
+    static private Transmission instance;
+
+    private Transmission()
     {
 
     }
-
+    public static Transmission getInstance()
+    {
+        if(instance==null)
+        {
+            instance= new Transmission();
+        }
+        return instance;
+    }
     public String premier()
     {
-        Packet packet= new Packet();
-        packet.setId(currentPacket);
-        packet.setMin(premierPacket);
-        packet.setMax(dernierPacket);
-        packet.setType("$");
-        packet.setData(nomFichier);
+        Packet packet= new PacketBuilder(currentPacket,premierPacket,dernierPacket,"$",nomFichier).build();
         String message=packet.toString();
         return message;
     }
 
     public String suivant(String data)
     {
-        Packet packet= new Packet();
-        packet.setId(currentPacket);
-        packet.setMin(premierPacket);
-        packet.setMax(dernierPacket);
-        packet.setType("$");
-        packet.setData(data);
+        Packet packet= new PacketBuilder(currentPacket,premierPacket,dernierPacket,"$",data).build();
         String message=packet.toString();
         return message;
     }
@@ -49,7 +47,6 @@ public class Transmission {
                     String tempPacket = premier();
                     tempPacket = monCrc.ajouterCrc(tempPacket);
                     monLog.clientLogging(tempPacket);
-                    monSocket.envoyer(tempPacket);
                     if(attente(tempPacket))
                     {
                         break;
@@ -86,7 +83,6 @@ public class Transmission {
                 tempPacket=suivant(monData);
                 tempPacket = monCrc.ajouterCrc(tempPacket);
                 monLog.clientLogging(tempPacket);
-                monSocket.envoyer(tempPacket);
                 if(!(attente(tempPacket)))
                 {
                     i=i-200;
@@ -100,15 +96,9 @@ public class Transmission {
 
     public void initialisation(String adresse, File monFichier)
     {
-        monSocket = new Socket();
-        try{
-            monSocket.initialisation(adresse);
-        }
-        catch(Exception e){
 
-        }
             //Creation du Crc
-        monCrc = new Crc();
+        monCrc = new Crc(adresse,false);
         monLog = new Log();
 
         //initialisation des variables
@@ -127,9 +117,10 @@ public class Transmission {
         try {
             while(true) {
 
-                String packetRecu = monSocket.recevoir();
+                String packetRecu=monCrc.verification();
 
-                if (!(monCrc.verification(packetRecu))) {
+
+                if ((packetRecu.equals(""))) {
                     System.out.println("crc rate");
                     return false;
                 }
