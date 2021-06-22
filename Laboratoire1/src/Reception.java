@@ -21,16 +21,16 @@ public class Reception {
         }
         return instance;
     }
-    public void initialisation() throws IOException
+    public void initialisation(int brise) throws IOException
     {
         adresse="gegi-lab3041-02";
 
-        monCRC= new Crc(adresse,true);
+        monCRC= new Crc(adresse,true,brise);
         monLog=new Log();
         compteur_erreur=0;
         current_packet=1;
     }
-    public void reception() {
+    public void reception() throws TransmissionErrorException {
         while (true) {
 
 
@@ -38,7 +38,7 @@ public class Reception {
                 String packetRecu;
                 packetRecu=monCRC.verification();
                 //couche liaison
-                if (!(packetRecu.equals(""))) {
+                if (!(packetRecu.substring(15).equals("*"))) {
 
                     if ((packetRecu.substring(14, 15)).equals("$")) {
                         if (Long.parseLong(packetRecu.substring(0, 4)) == current_packet) {
@@ -61,12 +61,15 @@ public class Reception {
                     }
                 } else {
                     try {
-                        System.out.println("crc rate");
                         String packetenvoye = retransmission(packetRecu);
                         monLog.serverLogging(packetenvoye);
                     } catch (TransmissionErrorException e) {
                         System.out.println("connection perdue, 3 erreurs !");
                         monCRC.reinitialisation();
+                        try {
+                        this.initialisation(0);
+                        } catch (Exception exception) {}
+                        throw new TransmissionErrorException();
                     }
                     ;
                 }

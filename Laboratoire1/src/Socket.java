@@ -19,11 +19,19 @@ public class Socket {
         DatagramPacket packet = new DatagramPacket(buf, buf.length, ip, port);
         monSocket.send(packet);
     }
-    public void initialisation(String adresse) throws IOException
+    public void initialisation(String adresse, int brise) throws IOException
     {
         // get a datagram socket
         monSocket = new DatagramSocket();
-        monSocket.setSoTimeout(10000);
+        if (brise==-1)
+        {
+            monSocket.setSoTimeout(1);
+        }
+        else
+            {
+                monSocket.setSoTimeout(10000);
+            }
+
         ip=InetAddress.getByName(adresse);
         port=50000;
 

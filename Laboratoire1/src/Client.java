@@ -5,7 +5,9 @@ public class Client {
     {
         Transmission transmission_1= Transmission.getInstance();
         File monFichier = new File("C:\\Users\\gaup1302\\S3APP3\\Laboratoire1\\src\\one-liners.txt");
-        transmission_1.initialisation("gegi-lab3041-02",monFichier);
-        transmission_1.transmettre();
+        transmission_1.initialisation("gegi-lab3041-02",monFichier,4);
+        try {
+            transmission_1.transmettre();
+        }catch(Exception e){};
     }
 }

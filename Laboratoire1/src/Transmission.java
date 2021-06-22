@@ -10,6 +10,7 @@ public class Transmission {
     File fichier;
     Crc monCrc;
     Log monLog;
+    int compteur_erreur;
     static private Transmission instance;
 
     private Transmission()
@@ -38,7 +39,7 @@ public class Transmission {
         return message;
     }
 
-    public void transmettre()
+    public void transmettre() throws TransmissionErrorException
     {
         //Creation du premier packet
 
@@ -90,15 +91,17 @@ public class Transmission {
                     currentPacket--;
                 }
             }
-        }catch(Exception e){}
+        }catch(Exception e){
+        }
         monLog.fermer();
+
     }
 
-    public void initialisation(String adresse, File monFichier)
+    public void initialisation(String adresse, File monFichier, int brise)
     {
 
             //Creation du Crc
-        monCrc = new Crc(adresse,false);
+        monCrc = new Crc(adresse,false,brise);
         monLog = new Log();
 
         //initialisation des variables
@@ -112,7 +115,7 @@ public class Transmission {
         dernierPacket=totalPacketNumber+premierPacket;
     }
 
-    public boolean attente(String packet)
+    public boolean attente(String packet) throws TransmissionErrorException
     {
         try {
             while(true) {
@@ -120,8 +123,9 @@ public class Transmission {
                 String packetRecu=monCrc.verification();
 
 
-                if ((packetRecu.equals(""))) {
-                    System.out.println("crc rate");
+                if ((packetRecu.substring(15).equals("*"))) {
+                    compteur_erreur++;
+
                     return false;
                 }
                 if ((packetRecu.substring(0, 14).equals( packet.substring(0, 14)))) {
@@ -139,7 +143,7 @@ public class Transmission {
                 }
             }
 
-        }catch(Exception e){System.out.println(e); }
+        }catch(Exception e){}
         return false;
     }
 }

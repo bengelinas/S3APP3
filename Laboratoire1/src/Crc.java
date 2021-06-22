@@ -6,15 +6,17 @@ public class Crc {
     int packet_recu;
     int packet_perdu;
     int packet_erreur;
-    Crc(String adresse, boolean serveur){
+    int monBrise;
+    Crc(String adresse, boolean serveur, int brise){
         packet_transmis=0;
         packet_erreur=0;
         packet_perdu=0;
         packet_recu=0;
+        monBrise=brise;
         monSocket = new Socket();
         if(serveur==false){
         try{
-            monSocket.initialisation(adresse);
+            monSocket.initialisation(adresse, brise);
             } catch(Exception e) {
             }
         }else
@@ -35,7 +37,13 @@ public class Crc {
 
     public String ajouterCrc(String packet)
     {
+
         String temp=encode(packet);
+        if(monBrise>0)
+        {
+        temp="00000000";
+        monBrise--;
+        }
         String tempDebut=packet.substring(0,15);
         String tempFin=packet.substring(15);
         packet=tempDebut+temp+tempFin;
@@ -48,6 +56,7 @@ public class Crc {
 
     public String verification()
     {
+
         String packet="";
         try {
         packet=monSocket.recevoir();
@@ -68,7 +77,7 @@ public class Crc {
         else
             {
                 packet_erreur++;
-                return "";
+                return tempDebut+"*";
             }
     }
     public void reinitialisation()
