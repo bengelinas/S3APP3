@@ -1,12 +1,11 @@
 import java.io.IOException;
-import java.net.InetAddress;
 
 public class ServeurTest {
     public static void main(String[] args) throws IOException {
-        Reception reception_1= Reception.getInstance();
-        reception_1.initialisation(0);
+        Couche_transportServeur couchetransportServeur_1 = Couche_transportServeur.getInstance();
+        couchetransportServeur_1.initialisation(0);
         try{
-        reception_1.reception();}
+        couchetransportServeur_1.reception();}
         catch(Exception exception){System.out.println(exception);
         };
 

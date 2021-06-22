@@ -1,19 +1,19 @@
 import java.io.*;
 import java.nio.file.*;
-import java.text.DecimalFormat;
-public class Transmission {
+
+public class Couche_transportClient {
     long premierPacket;
     long dernierPacket;
     long currentPacket;
     long tailleFichier;
     String nomFichier;
     File fichier;
-    Crc monCrc;
+    Couche_liaison monCoucheliaison;
     Log monLog;
     int compteur_erreur;
-    static private Transmission instance;
+    static private Couche_transportClient instance;
 
-    private Transmission()
+    private Couche_transportClient()
     {
 
     }
@@ -24,11 +24,11 @@ public class Transmission {
      * @return Une instance de Transmission
      */
 
-    public static Transmission getInstance()
+    public static Couche_transportClient getInstance()
     {
         if(instance==null)
         {
-            instance= new Transmission();
+            instance= new Couche_transportClient();
         }
         return instance;
     }
@@ -74,7 +74,7 @@ public class Transmission {
             try {
                 while(true) {
                     String tempPacket = premier();
-                    tempPacket = monCrc.ajouterCrc(tempPacket);
+                    tempPacket = monCoucheliaison.ajouterCrc(tempPacket);
                     monLog.clientLogging(tempPacket);
                     if(attente(tempPacket))
                     {
@@ -110,7 +110,7 @@ public class Transmission {
 
                 //Attendre le packet d'acknowledgement
                 tempPacket=suivant(monData);
-                tempPacket = monCrc.ajouterCrc(tempPacket);
+                tempPacket = monCoucheliaison.ajouterCrc(tempPacket);
                 monLog.clientLogging(tempPacket);
                 if(!(attente(tempPacket)))
                 {
@@ -136,8 +136,8 @@ public class Transmission {
     {
 
             //Creation du Crc
-        monCrc = new Crc(adresse,false,brise);
-        monLog = new Log();
+        monCoucheliaison = new Couche_liaison(adresse,false,brise);
+        monLog = new Log("logClient");
 
         //initialisation des variables
         String message="";
@@ -162,7 +162,7 @@ public class Transmission {
         try {
             while(true) {
 
-                String packetRecu=monCrc.verification();
+                String packetRecu= monCoucheliaison.verification();
 
 
                 if ((packetRecu.substring(15).equals("*"))) {

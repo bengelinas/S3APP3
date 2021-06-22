@@ -1,15 +1,15 @@
 import java.io.IOException;
 
-public class Reception {
+public class Couche_transportServeur {
     String adresse;
-    Crc monCRC;
+    Couche_liaison monCoucheliaison;
     int compteur_erreur;
-    FileMaker monFichier;
+    Couche_applicationServeur monFichier;
     int current_packet;
     Log monLog;
-    static private Reception instance;
+    static private Couche_transportServeur instance;
 
-    private Reception()
+    private Couche_transportServeur()
     {
 
     }
@@ -19,11 +19,11 @@ public class Reception {
      * @return Une instance de Reception
      */
 
-    public static Reception getInstance()
+    public static Couche_transportServeur getInstance()
     {
         if(instance==null)
         {
-            instance= new Reception();
+            instance= new Couche_transportServeur();
         }
         return instance;
     }
@@ -38,8 +38,8 @@ public class Reception {
     {
         adresse="gegi-lab3041-02";
 
-        monCRC= new Crc(adresse,true,brise);
-        monLog=new Log();
+        monCoucheliaison = new Couche_liaison(adresse,true,brise);
+        monLog=new Log("logServeur");
         compteur_erreur=0;
         current_packet=1;
     }
@@ -55,14 +55,14 @@ public class Reception {
 
                 //couche physique
                 String packetRecu;
-                packetRecu=monCRC.verification();
+                packetRecu= monCoucheliaison.verification();
                 //couche liaison
                 if (!(packetRecu.substring(15).equals("*"))) {
 
                     if ((packetRecu.substring(14, 15)).equals("$")) {
                         if (Long.parseLong(packetRecu.substring(0, 4)) == current_packet) {
                             if ((packetRecu.substring(0, 4)).equals("0001")) {
-                                monFichier = new FileMaker(packetRecu);
+                                monFichier = new Couche_applicationServeur(packetRecu);
                             } else if ((packetRecu.substring(0, 4)).equals(packetRecu.substring(10, 14))) {
                                 monFichier.appendDataInFile(packetRecu);
                                 monFichier.fermer();
@@ -84,7 +84,7 @@ public class Reception {
                         monLog.serverLogging(packetenvoye);
                     } catch (TransmissionErrorException e) {
                         System.out.println("connection perdue, 3 erreurs !");
-                        monCRC.reinitialisation();
+                        monCoucheliaison.reinitialisation();
                         try {
                         this.initialisation(0);
                         } catch (Exception exception) {}
@@ -110,7 +110,7 @@ public class Reception {
                     Long.parseLong(packetRecu.substring(10,14)),
                     "!","").build();
             String message=packet.toString();
-            message=monCRC.ajouterCrc(message);
+            message= monCoucheliaison.ajouterCrc(message);
             return message;
         }
 
@@ -127,7 +127,7 @@ public class Reception {
                     Long.parseLong(packetRecu.substring(5,9)),
                     Long.parseLong(packetRecu.substring(10,14)),"?","").build();
             String message=packet.toString();
-            message=monCRC.ajouterCrc(message);
+            message= monCoucheliaison.ajouterCrc(message);
             compteur_erreur++;
             if(compteur_erreur>3)
             {

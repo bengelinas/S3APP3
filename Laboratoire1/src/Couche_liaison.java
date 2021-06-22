@@ -1,8 +1,8 @@
 import java.util.zip.* ;
 
-public class Crc {
+public class Couche_liaison {
     int packet_transmis;
-    Socket monSocket;
+    Couche_physique monCouchephysique;
     int packet_recu;
     int packet_perdu;
     int packet_erreur;
@@ -15,22 +15,22 @@ public class Crc {
      * @param brise Briser les packets selon le nombre indiqué et peut mettre le timeout à 1 seconde si = -1;
      */
 
-    Crc(String adresse, boolean serveur, int brise){
+    Couche_liaison(String adresse, boolean serveur, int brise){
         packet_transmis=0;
         packet_erreur=0;
         packet_perdu=0;
         packet_recu=0;
         monBrise=brise;
-        monSocket = new Socket();
+        monCouchephysique = new Couche_physique();
         if(serveur==false){
         try{
-            monSocket.initialisation(adresse, brise);
+            monCouchephysique.initialisation(adresse, brise);
             } catch(Exception e) {
             }
         }else
             {
                 try{
-                    monSocket.initialisationReception(adresse);
+                    monCouchephysique.initialisationReception(adresse);
                 } catch(Exception e) {
                 }
             }
@@ -70,7 +70,7 @@ public class Crc {
         packet=tempDebut+temp+tempFin;
         packet_transmis++;
         try {
-            monSocket.envoyer(packet);
+            monCouchephysique.envoyer(packet);
         }catch(Exception e){}
         return packet;
     }
@@ -84,7 +84,7 @@ public class Crc {
 
         String packet="";
         try {
-        packet=monSocket.recevoir();
+        packet= monCouchephysique.recevoir();
         }catch(Exception e){}
         packet_recu++;
         String tempDebut=packet.substring(0,15);

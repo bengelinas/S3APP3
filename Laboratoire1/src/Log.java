@@ -8,14 +8,15 @@ import java.util.logging.*;
         private String toBeInserted;
         private SimpleDateFormat dateFormat;
         private String newDateFormat;
+        private String nom;
 
         /**
          *  Instanciation d'un Log file dans un répertoire choisi
          */
 
-        public Log() {
+        public Log(String nom) {
             try {
-                logHandler = new FileHandler("C:\\Users\\benge\\OneDrive\\Documents\\Repo\\S3APP3\\Laboratoire1\\src\\log.txt");
+                logHandler = new FileHandler("C:\\Users\\benge\\OneDrive\\Documents\\Repo\\S3APP3\\Laboratoire1\\src\\" + nom);
             } catch (Exception e) {
                 e.printStackTrace();
             }

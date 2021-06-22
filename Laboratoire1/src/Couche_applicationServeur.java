@@ -1,6 +1,6 @@
 import java.io.FileOutputStream;
 
-public class FileMaker {
+public class Couche_applicationServeur {
     private FileOutputStream writeInFile;
     private String nomFichier;
     private byte[] conversion;
@@ -10,7 +10,7 @@ public class FileMaker {
      * Fonction d'instanciation d'un fichier avec le nom du fichier en paramètre reçu par le premier packet
      * @param nom Le nom du fichier
      */
-    public FileMaker(String nom) {
+    public Couche_applicationServeur(String nom) {
         try {
             nomFichier = nom.substring(23);
 

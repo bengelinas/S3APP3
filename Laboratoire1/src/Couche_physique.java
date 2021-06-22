@@ -8,7 +8,7 @@ import java.net.SocketTimeoutException;
 // peut-etre essayer de faire un echange d'ip et de port avec l'autre
 //*********************************************************************
 
-public class Socket {
+public class Couche_physique {
     DatagramSocket monSocket;
     InetAddress ip;
     int port;
