@@ -15,7 +15,7 @@ import java.util.logging.*;
 
         public Log() {
             try {
-                logHandler = new FileHandler("C:\\Users\\gaup1302\\S3APP3\\Laboratoire1\\src\\log.txt");
+                logHandler = new FileHandler("C:\\Users\\benge\\OneDrive\\Documents\\Repo\\S3APP3\\Laboratoire1\\src\\log.txt");
             } catch (Exception e) {
                 e.printStackTrace();
             }

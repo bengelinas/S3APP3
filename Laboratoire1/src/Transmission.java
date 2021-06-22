@@ -129,7 +129,7 @@ public class Transmission {
      * Initialisation du CRC et des paramètres des packets
      * @param adresse Adresse de l'envoi
      * @param monFichier Nom du fichier d'envoi
-     * @param brise Briser le code ou non 0 ou 1;
+     * @param brise Briser les packets selon le nombre indiqué et peut mettre le timeout à 1 seconde si = -1;
      */
 
     public void initialisation(String adresse, File monFichier, int brise)

@@ -8,7 +8,7 @@ public class FileMaker {
 
     /**
      * Fonction d'instanciation d'un fichier avec le nom du fichier en paramètre reçu par le premier packet
-     * @param nom
+     * @param nom Le nom du fichier
      */
     public FileMaker(String nom) {
         try {
@@ -21,7 +21,7 @@ public class FileMaker {
 
     /**
      * Fonction d'écriture de la data reçu des autres packets envoyés
-     * @param Data
+     * @param Data Le contenu à inserer dans le fichier
      */
     public void appendDataInFile(String Data) {
         try {

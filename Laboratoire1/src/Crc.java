@@ -12,7 +12,7 @@ public class Crc {
      * Fonction d'instanciation d'un CRC
      * @param adresse Adresse
      * @param serveur Serveur oui ou non
-     * @param brise Briser la fonction 0 ou 1;
+     * @param brise Briser les packets selon le nombre indiqué et peut mettre le timeout à 1 seconde si = -1;
      */
 
     Crc(String adresse, boolean serveur, int brise){

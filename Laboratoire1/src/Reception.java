@@ -30,7 +30,7 @@ public class Reception {
 
     /**
      * Fonction d'initialisation du CRC, Log et l'adresse de l'ordinateur
-     * @param brise Permet de briser la fonction 0 ou 1;
+     * @param brise Briser les packets selon le nombre indiqué et peut mettre le timeout à 1 seconde si = -1;
      * @throws IOException
      */
 
