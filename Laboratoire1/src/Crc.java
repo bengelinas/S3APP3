@@ -7,6 +7,14 @@ public class Crc {
     int packet_perdu;
     int packet_erreur;
     int monBrise;
+
+    /**
+     * Fonction d'instanciation d'un CRC
+     * @param adresse Adresse
+     * @param serveur Serveur oui ou non
+     * @param brise Briser la fonction 0 ou 1;
+     */
+
     Crc(String adresse, boolean serveur, int brise){
         packet_transmis=0;
         packet_erreur=0;
@@ -27,6 +35,13 @@ public class Crc {
                 }
             }
     }
+
+    /**
+     * Permet d'encode le header et la data
+     * @param packet Prend l'information d'un packet en String
+     * @return Retourne le CRC
+     */
+
     public static String encode(String packet) {
         CRC32 monCRC = new CRC32( ) ;
         monCRC.update( packet.getBytes( ) ) ;
@@ -34,6 +49,12 @@ public class Crc {
         String padded = "00000000".substring(temp.length()) + temp;
         return padded;
     }
+
+    /**
+     * Fonction qui permet l'ajout du CRC au packet
+     * @param packet Prend un packet
+     * @return Retourne le packet avec le CRC dedans
+     */
 
     public String ajouterCrc(String packet)
     {
@@ -54,6 +75,10 @@ public class Crc {
         return packet;
     }
 
+    /**
+     * Fonction de vérification du CRC d'un packet reçu
+     * @return Retourne le packet
+     */
     public String verification()
     {
 
@@ -80,6 +105,11 @@ public class Crc {
                 return tempDebut+"*";
             }
     }
+
+    /**
+     * Fonction qui réinitialise les compteurs à 0;
+     */
+
     public void reinitialisation()
     {
         packet_transmis=0;

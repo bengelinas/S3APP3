@@ -6,6 +6,10 @@ public class FileMaker {
     private byte[] conversion;
 
 
+    /**
+     * Fonction d'instanciation d'un fichier avec le nom du fichier en paramètre reçu par le premier packet
+     * @param nom
+     */
     public FileMaker(String nom) {
         try {
             nomFichier = nom.substring(23);
@@ -15,6 +19,10 @@ public class FileMaker {
         }
     }
 
+    /**
+     * Fonction d'écriture de la data reçu des autres packets envoyés
+     * @param Data
+     */
     public void appendDataInFile(String Data) {
         try {
             Data= Data.substring(23);
@@ -24,6 +32,9 @@ public class FileMaker {
         }
     }
 
+    /**
+     * Fonction de fermeture du ficher
+     */
     public void fermer() {
         try {
             writeInFile.close();

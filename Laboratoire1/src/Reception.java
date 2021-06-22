@@ -13,6 +13,12 @@ public class Reception {
     {
 
     }
+
+    /**
+     * Fonction de Reception permettant d'instancier une seule fois
+     * @return Une instance de Reception
+     */
+
     public static Reception getInstance()
     {
         if(instance==null)
@@ -21,6 +27,13 @@ public class Reception {
         }
         return instance;
     }
+
+    /**
+     * Fonction d'initialisation du CRC, Log et l'adresse de l'ordinateur
+     * @param brise Permet de briser la fonction 0 ou 1;
+     * @throws IOException
+     */
+
     public void initialisation(int brise) throws IOException
     {
         adresse="gegi-lab3041-02";
@@ -30,6 +43,12 @@ public class Reception {
         compteur_erreur=0;
         current_packet=1;
     }
+
+    /**
+     * Fonction de reception d'un packet du serveur et vérification du CRC
+     * @throws TransmissionErrorException
+     */
+
     public void reception() throws TransmissionErrorException {
         while (true) {
 
@@ -78,7 +97,11 @@ public class Reception {
             }
             }
 
-
+    /**
+     * Fonction de confirmation d'un packet reçu
+     * @param packetRecu Prends un packet reçu
+     * @return Retourne un message
+     */
         public String confirmer(String packetRecu)
         {
             //couche transport
@@ -90,6 +113,13 @@ public class Reception {
             message=monCRC.ajouterCrc(message);
             return message;
         }
+
+    /**
+     * Fonction de retransmission d'un packet si la reception se fait pas
+     * @param packetRecu Prends le packet reçu invalide
+     * @return Retourne un message
+     * @throws TransmissionErrorException
+     */
         public String retransmission(String packetRecu) throws TransmissionErrorException
         {
             //couche transport

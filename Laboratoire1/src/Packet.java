@@ -48,6 +48,15 @@ public class Packet {
     String type;
     String data;
 
+    /**
+     * Instanciation d'un packet sans le CRC
+     * @param id Id du current packet
+     * @param min Id du premier packet
+     * @param max Id du dernier packet
+     * @param type Type de packet
+     * @param data Data contenu dans le packet
+     */
+
     public Packet(long id, long min, long max, String type, String data)
     {
         this.id = id;
@@ -56,6 +65,11 @@ public class Packet {
         this.type = type;
         this.data = data;
     }
+
+    /**
+     * Formatting du packet en String concat
+     * @return Un String contenant le message
+     */
 
     public String toString()
     {

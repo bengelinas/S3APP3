@@ -12,6 +12,13 @@ public class Socket {
     DatagramSocket monSocket;
     InetAddress ip;
     int port;
+
+    /**
+     * Envoi d'un packet à travers un socket
+     * @param message Message dans le packet pour l'envoi
+     * @throws IOException
+     */
+
     public void envoyer(String message) throws IOException
     {
         byte[] buf;
@@ -19,6 +26,14 @@ public class Socket {
         DatagramPacket packet = new DatagramPacket(buf, buf.length, ip, port);
         monSocket.send(packet);
     }
+
+    /**
+     * Initialisation d'un socket pour la communication transmission client
+     * @param adresse Adresse INet Client
+     * @param brise Brise la communication ou non 0 ou 1;
+     * @throws IOException
+     */
+
     public void initialisation(String adresse, int brise) throws IOException
     {
         // get a datagram socket
@@ -36,12 +51,26 @@ public class Socket {
         port=50000;
 
     }
+
+    /**
+     * Initialisation de la communication reception serveur
+     * @param adresse Adresse INet Serveur
+     * @throws IOException
+     */
+
     public void initialisationReception(String adresse) throws IOException
     {
         // get a datagram socket
         monSocket = new DatagramSocket(50000);
 
     }
+
+    /**
+     * Reception d'un packet et renvoie de la confirmation
+     * @return Retourne un message contenu dans le packet
+     * @throws IOException
+     */
+
     public String recevoir() throws IOException
     {
         byte[] buf = new byte[225];
